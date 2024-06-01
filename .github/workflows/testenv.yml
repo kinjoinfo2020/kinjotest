@@ -5,6 +5,9 @@ on:
 #  deployment:                    # デプロイを作成したときに
 #  deployment_status:             # サードパーティによってデプロイの状態が提供されたときに
 
+  # デプロイが成功した時に実行する。
+  deployment_status:
+
 env:
 #  # 認証情報（HHH）
 #  GH_HOST: github.dena.jp                                               # 会社：GHE Hostname
@@ -30,6 +33,8 @@ env:
 
 jobs:
   dump_contexts-on-development-environment:
+#    if: github.event_name == 'deployment_status' && github.event.action == 'created' && github.event.check_run.status == 'waiting' && github.event.deployment_status.environment == 'development'
+    if: github.event_name == 'deployment_status' && github.event.action == 'created' && github.event.check_run.status == 'waiting'
     runs-on: self-hosted
     environment:
       name: development
@@ -44,19 +49,19 @@ jobs:
           echo "$GITHUB_CONTEXT"
           
         
-  dump_contexts-on-production-environment:
-    runs-on: self-hosted
-    environment:
-      name: production
-    steps:
-      - name: Show Environment
-        run: echo "Current environment is Production, Current branch is ${{ github.ref }} "
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: |
-          echo secret ${{ secrets.TEST_SECRET_INFO }}
-          echo "$GITHUB_CONTEXT"
+#  dump_contexts-on-production-environment:
+#    runs-on: self-hosted
+#    environment:
+#      name: production
+#    steps:
+#      - name: Show Environment
+#        run: echo "Current environment is Production, Current branch is ${{ github.ref }} "
+#      - name: Dump GitHub context
+#        env:
+#          GITHUB_CONTEXT: ${{ toJson(github) }}
+#        run: |
+#          echo secret ${{ secrets.TEST_SECRET_INFO }}
+#          echo "$GITHUB_CONTEXT"
           
         # 「成功」の場合
       - name: Execute Result - Success
