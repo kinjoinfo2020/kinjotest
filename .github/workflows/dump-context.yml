@@ -44,8 +44,8 @@ on:
 jobs:
   dump_contexts:
     runs-on: self-hosted
-    environment:
-      name: production
+#    environment:
+#      name: production
     steps:
       - name: Show Environment
         run: echo "Current environment is Production, Current branch is ${{ github.ref }} "

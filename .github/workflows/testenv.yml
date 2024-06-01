@@ -1,0 +1,32 @@
+name: Test Environment
+on:
+  workflow_dispatch:            # デフォルトブランチで手動実行
+
+#  deployment:                    # デプロイを作成したときに
+#  deployment_status:             # サードパーティによってデプロイの状態が提供されたときに
+
+
+jobs:
+  dump_contexts-on-development-environment:
+    runs-on: self-hosted
+    environment:
+      name: development
+    steps:
+      - name: Show Environment
+        run: echo "Current environment is Production, Current branch is ${{ github.ref }} "
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+        
+  dump_contexts-on-production-environment:
+    runs-on: self-hosted
+    environment:
+      name: production
+    steps:
+      - name: Show Environment
+        run: echo "Current environment is Production, Current branch is ${{ github.ref }} "
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
