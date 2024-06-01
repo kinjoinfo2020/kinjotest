@@ -34,13 +34,18 @@ env:
 jobs:
   dump_contexts-on-development-environment:
 #    if: github.event_name == 'deployment_status' && github.event.action == 'created' && github.event.check_run.status == 'waiting' && github.event.deployment_status.environment == 'development'
-    if: github.event_name == 'deployment_status' && github.event.action == 'created' && github.event.check_run.status == 'waiting'
+#    if: github.event_name == 'deployment_status' && github.event.action == 'created' && github.event.check_run.status == 'waiting'
     runs-on: self-hosted
     environment:
       name: development
     steps:
       - name: Show Environment
-        run: echo "Current environment is Development, Current branch is ${{ github.ref }} "
+        run: |
+          echo "Current environment is Development, Current branch is ${{ github.ref }} "
+          echo "github.event_name = ${{ github.event_name }}"
+          echo "github.event.action = ${{ github.event.action }}"
+          echo "github.event.check_run.status = ${{ github.event.check_run.status }}"
+          echo "github.event.deployment_status.environment = ${{ github.event.deployment_status.environment }}"
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
