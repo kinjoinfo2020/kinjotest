@@ -5,6 +5,28 @@ on:
 #  deployment:                    # デプロイを作成したときに
 #  deployment_status:             # サードパーティによってデプロイの状態が提供されたときに
 
+env:
+#  # 認証情報（HHH）
+#  GH_HOST: github.dena.jp                                               # 会社：GHE Hostname
+#  GH_ENTERPRISE_TOKEN: ${{ secrets.HHH_PERSONAL_ACCESS_TOKEN }}         # 会社：GHEアクセストークン
+#  SLACK_BOT_TOKEN: ${{ secrets.SLACK_HHH_JENKINS_TOKEN }}               # 会社：SLACK APIアクセストークン
+#  # 認証情報（Sharin）
+#  GH_HOST: github.dena.jp                                               # 会社：GHE Hostname
+#  GH_ENTERPRISE_TOKEN: ${{ secrets.KINJO_GH_TOKEN }}                    # 会社：GHEアクセストークン
+#  SLACK_BOT_TOKEN: ${{ secrets.SLACK_ISSUE_NOTIFY_BOT_TOKEN }}          # 会社：SLACK APIアクセストークン
+#  #  GH_ENTERPRISE_TOKEN: ${{ secrets.SHARIN_UNITYINFRA_GITHUB_TOKEN }}    # 会社：GHEアクセストークン
+#  #  GH_ENTERPRISE_TOKEN: ${{ secrets.SHARIN_JENKINS_GITHUB_TOKEN }}       # 会社：GHEアクセストークン
+#  # 認証情報（ro-kinjo）
+#  GH_HOST: github.dena.jp                                               # 会社：GHE Hostname
+#  GH_ENTERPRISE_TOKEN: ${{ secrets.KINJO_GH_TOKEN }}                    # 会社：GHEアクセストークン
+#  SLACK_BOT_TOKEN: ${{ secrets.SLACK_ISSUE_NOTIFY_BOT_TOKEN }}          # 会社：SLACK APIアクセストークン
+#  #  GH_ENTERPRISE_TOKEN: ${{ secrets.SHARIN_UNITYINFRA_GITHUB_TOKEN }}    # 会社：GHEアクセストークン
+#  #  GH_ENTERPRISE_TOKEN: ${{ secrets.SHARIN_JENKINS_GITHUB_TOKEN }}       # 会社：GHEアクセストークン
+  # 認証情報（kinjoinfo2020）
+  GH_HOST: github.com                                                   # 個人：GH Hostname
+  GH_TOKEN: ${{ secrets.KINJO_GH_TOKEN }}                               # 個人：GHアクセストークン
+  SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFY_BOT_TOKEN }}                # 個人：SLACK APIアクセストークン
+  SLACK_CHANNEL: "github-actions-notification"
 
 jobs:
   dump_contexts-on-development-environment:
@@ -35,3 +57,38 @@ jobs:
         run: |
           echo secret ${{ secrets.TEST_SECRET_INFO }}
           echo "$GITHUB_CONTEXT"
+          
+        # 「成功」の場合
+      - name: Execute Result - Success
+        if: success()
+        run: |
+          cat <<EOF > ./payload-slack-content.json
+          {
+           "attachments": [
+             {
+               "blocks": [
+                 {
+                   "type": "section",
+                   "text": {
+                     "type": "mrkdwn",
+                     "text": "Successful: <${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}| ${{ github.workflow }} - ${{ github.run_number }}>"
+                   }
+                 },
+                 {
+                   "type": "section",
+                   "text": {
+                     "type": "mrkdwn",
+                     "text": "OK！*"
+                   }
+                 }
+               ]
+             }
+           ]
+          }
+          EOF
+
+      - name: Execute Result - Slack Notify
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: '${{ env.SLACK_CHANNEL }}'
+          payload-file-path: "./payload-slack-content.json"
