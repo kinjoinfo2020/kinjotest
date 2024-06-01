@@ -53,6 +53,7 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
+        
 #        
 #  dump_contexts_dev_kinjo:
 #    if: github.repository_owner  == 'ro-kinjo' && github.ref_name == 'dev'
