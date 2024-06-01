@@ -62,7 +62,11 @@ jobs:
 #        run: |
 #          echo secret ${{ secrets.TEST_SECRET_INFO }}
 #          echo "$GITHUB_CONTEXT"
-          
+
+
+  slack-notify:
+    runs-on: self-hosted
+    steps:
         # 「成功」の場合
       - name: Execute Result - Success
         if: success()
