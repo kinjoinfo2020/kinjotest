@@ -13,11 +13,14 @@ jobs:
       name: development
     steps:
       - name: Show Environment
-        run: echo "Current environment is Production, Current branch is ${{ github.ref }} "
+        run: echo "Current environment is Development, Current branch is ${{ github.ref }} "
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
+        run: |
+          echo secret ${{ secrets.TEST_SECRET_INFO }}
+          echo "$GITHUB_CONTEXT"
+          
         
   dump_contexts-on-production-environment:
     runs-on: self-hosted
@@ -29,4 +32,6 @@ jobs:
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
+        run: |
+          echo secret ${{ secrets.TEST_SECRET_INFO }}
+          echo "$GITHUB_CONTEXT"
