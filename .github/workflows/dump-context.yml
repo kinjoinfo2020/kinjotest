@@ -1,0 +1,64 @@
+name: Dump Context
+run-name: Get information of all context
+on:
+  workflow_dispatch:            # デフォルトブランチで手動実行
+#  branch_protection_rule:       # created,edited,deletedの場合を検証
+#  create:                       # Git ブランチまたはタグを作成したときに
+#  delete:                       # Git ブランチまたはタグを削除したときに
+#  discussion:                   # Discussionsトリガーを検証
+#    types: [created, edited]    # アクティビティの種類は二つを検証
+#  discussion_comment:           # Discussions Commentトリガーを検証
+#    types: [created, edited]    # アクティビティの種類は二つを検証
+#  fork:                         # リポジトリをフォークしたときに
+#  gollum:                       # Wikiページを作成または更新したときに
+#  issues:                       # ワークフローのリポジトリ内の issue が作成または変更されたときに
+#  issue_comment:                # issue または pull request のコメントが作成、編集、または削除されたときに
+#  label:                        # ワークフローのリポジトリ内のラベルが作成または変更されたときに
+#  milestone:                    # ワークフローのリポジトリ内のマイルストーンが作成または変更されたときに
+#  project:                      # プロジェクト (クラシック)が作成または変更されたときに
+#  project_column:               # プロジェクト (クラシック)の列が作成または変更されたときに
+#  project_card:                 # プロジェクト (クラシック)のカードが作成または変更されたときに
+#  pull_request:                 # ワークフローのリポジトリ内の pull request のアクティビティが発生したときに
+#  pull_request_review:          # PRレビューが送信、編集、または無視されたときに
+#  pull_request_review_comment:  # PRレビューコメントが変更されたときに
+#  pull_request_target:          # ワークフローのリポジトリ内のPRのアクティビティが発生したときに
+#  registry_package:             # GitHub Packages に関連するアクティビティがリポジトリで発生したときに
+#  release:                      # リポジトリのリリース アクティビティが発生したときに
+#  repository_dispatch:          # GitHub の外部で生じるアクティビティのために
+#  schedule:                     # スケジュールした時刻に
+#    - cron:  '0 6 * * *'        # 毎日６時０分に自動実行
+#  status:                       # Git コミットの状態が変更されたときに
+#  watch:                        # ワークフローのリポジトリが Star 付きになったときに
+#  workflow_call:                # 別のワークフローから呼び出された場合にのみワークフローを実行します
+#  workflow_run:                 #
+#    workflows: [ Hello World ]
+#    types:
+#      - completed
+#  deployment:                    # デプロイを作成したときに
+#  deployment_status:             # サードパーティによってデプロイの状態が提供されたときに
+#  push:                         # push、pushによるdeploymentの検証
+#  page_build:                   # リポジトリGitHubPages有効で、GitHub Pagesの公開元であるブランチにプッシュしたときに
+#  public:                       #
+#  merge_group:                  #
+
+jobs:
+  dump_contexts:
+    runs-on: self-hosted
+    environment:
+      name: production
+    steps:
+      - name: Show Environment
+        run: echo "Current environment is Production, Current branch is ${{ github.ref }} "
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+#        
+#  dump_contexts_dev_kinjo:
+#    if: github.repository_owner  == 'ro-kinjo' && github.ref_name == 'dev'
+#    runs-on: self-hosted
+#    environment:
+#      name: development
+#    steps:
+#      - name: Show Environment
+#        run: echo "Current environment is development, Current branch is ${{ github.ref }} "
