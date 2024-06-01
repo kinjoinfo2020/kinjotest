@@ -70,6 +70,7 @@ jobs:
 
 
   slack-notify:
+    needs: dump_contexts-on-development-environment
     runs-on: self-hosted
     steps:
         # 「成功」の場合
