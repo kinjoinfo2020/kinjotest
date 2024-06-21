@@ -9,51 +9,13 @@ on:
   deployment_status:
 
 env:
-#  # 認証情報（HHH）
-#  GH_HOST: github.dena.jp                                               # 会社：GHE Hostname
-#  GH_ENTERPRISE_TOKEN: ${{ secrets.HHH_PERSONAL_ACCESS_TOKEN }}         # 会社：GHEアクセストークン
-#  SLACK_BOT_TOKEN: ${{ secrets.SLACK_HHH_JENKINS_TOKEN }}               # 会社：SLACK APIアクセストークン
-#  # 認証情報（Sharin）
-#  GH_HOST: github.dena.jp                                               # 会社：GHE Hostname
-#  GH_ENTERPRISE_TOKEN: ${{ secrets.KINJO_GH_TOKEN }}                    # 会社：GHEアクセストークン
-#  SLACK_BOT_TOKEN: ${{ secrets.SLACK_ISSUE_NOTIFY_BOT_TOKEN }}          # 会社：SLACK APIアクセストークン
-#  #  GH_ENTERPRISE_TOKEN: ${{ secrets.SHARIN_UNITYINFRA_GITHUB_TOKEN }}    # 会社：GHEアクセストークン
-#  #  GH_ENTERPRISE_TOKEN: ${{ secrets.SHARIN_JENKINS_GITHUB_TOKEN }}       # 会社：GHEアクセストークン
-#  # 認証情報（ro-kinjo）
-#  GH_HOST: github.dena.jp                                               # 会社：GHE Hostname
-#  GH_ENTERPRISE_TOKEN: ${{ secrets.KINJO_GH_TOKEN }}                    # 会社：GHEアクセストークン
-#  SLACK_BOT_TOKEN: ${{ secrets.SLACK_ISSUE_NOTIFY_BOT_TOKEN }}          # 会社：SLACK APIアクセストークン
-#  #  GH_ENTERPRISE_TOKEN: ${{ secrets.SHARIN_UNITYINFRA_GITHUB_TOKEN }}    # 会社：GHEアクセストークン
-#  #  GH_ENTERPRISE_TOKEN: ${{ secrets.SHARIN_JENKINS_GITHUB_TOKEN }}       # 会社：GHEアクセストークン
   # 認証情報（kinjoinfo2020）
   GH_HOST: github.com                                                   # 個人：GH Hostname
   GH_TOKEN: ${{ secrets.KINJO_GH_TOKEN }}                               # 個人：GHアクセストークン
   SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFY_BOT_TOKEN }}                # 個人：SLACK APIアクセストークン
   SLACK_CHANNEL: "github-actions-notification"
 
-jobs:
-#  dump_contexts-on-development-environment:
-##    if: github.event_name == 'deployment_status' && github.event.action == 'created' && github.event.check_run.status == 'waiting' && github.event.deployment_status.environment == 'development'
-##    if: github.event_name == 'deployment_status' && github.event.action == 'created' && github.event.check_run.status == 'waiting'
-#    runs-on: self-hosted
-#    environment:
-#      name: development
-#    steps:
-#      - name: Show Environment
-#        run: |
-#          echo "Current environment is Development, Current branch is ${{ github.ref }} "
-#          echo "github.event_name = ${{ github.event_name }}"
-#          echo "github.event.action = ${{ github.event.action }}"
-#          echo "github.event.check_run.status = ${{ github.event.check_run.status }}"
-#          echo "github.event.deployment_status.environment = ${{ github.event.deployment_status.environment }}"
-#      - name: Dump GitHub context
-#        env:
-#          GITHUB_CONTEXT: ${{ toJson(github) }}
-#        run: |
-#          echo secret ${{ secrets.TEST_SECRET_INFO }}
-#          echo "$GITHUB_CONTEXT"
-          
-        
+jobs:   
   dump_contexts-on-production-environment:
     runs-on: self-hosted
     environment:
